@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELIX - AI Text & Voice Assistant</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0a84ff, #002b75);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      letter-spacing: 1.5px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 30px;
+      text-align: center;
+      width: 80%;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 25px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #b3d9ff;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0066ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0047b3;
+    }
+
+    .voice-btn {
+      background-color: #0099ff;
+    }
+
+    .voice-btn:hover {
+      background-color: #007acc;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🤖 ELIX</h1>
+  <p>Your intelligent text and voice assistant — type or speak your query to interact seamlessly.</p>
+
+  <div class="container">
+    <!-- Text Assistant Section -->
+    <div class="card">
+      <h2>💬 Text Assistant</h2>
+      <input type="text" id="textInput" placeholder="Type your message..." />
+      <button onclick="handleText()">Send</button>
+      <p id="textResponse" style="margin-top:15px; font-size:0.95rem;"></p>
+    </div>
+
+    <!-- Voice Assistant Section -->
+    <div class="card">
+      <h2>🎙️ Voice Assistant</h2>
+      <button class="voice-btn" onclick="startVoice()">Start Listening</button>
+      <p id="voiceStatus" style="margin-top:15px; font-size:0.95rem;">Press to speak...</p>
+    </div>
+  </div>
+
+  <footer>© 2025 ELIX AI Assistant | Designed with 💙</footer>
+
+  <script>
+    // Text Assistant Simulation
+    function handleText() {
+      const input = document.getElementById('textInput').value.trim();
+      const response = document.getElementById('textResponse');
+
+      if (input === "") {
+        response.innerText = "Please enter a message!";
+      } else {
+        response.innerText = "ELIX says: " + generateResponse(input);
+      }
+    }
+
+    function generateResponse(input) {
+      if (input.toLowerCase().includes("hello")) return "Hello there! How can I assist you today?";
+      if (input.toLowerCase().includes("time")) return "The current time is " + new Date().toLocaleTimeString();
+      if (input.toLowerCase().includes("date")) return "Today's date is " + new Date().toLocaleDateString();
+      return "I'm processing your request...";
+    }
+
+    // Voice Assistant Simulation
+    function startVoice() {
+      const status = document.getElementById("voiceStatus");
+      if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.start();
+
+        recognition.onstart = () => {
+          status.innerText = "🎧 Listening...";
+        };
+
+        recognition.onresult = (event) => {
+          const speechResult = event.results[0][0].transcript;
+          status.innerText = `You said: "${speechResult}"`;
+        };
+
+        recognition.onerror = (event) => {
+          status.innerText = "⚠️ Could not recognize your voice. Please try again.";
+        };
+      } else {
+        status.innerText = "Your browser does not support speech recognition.";
+      }
+    }
+  </script>
+</body>
+</html>
